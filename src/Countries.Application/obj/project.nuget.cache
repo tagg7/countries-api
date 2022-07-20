@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "CKGyiM37R1dLuNx48xjv9mc904qG1eExWPpA1n8EdDWW3l1PoUjG8scjkFvY8B1dqgLc9ZUwciDYLS5vi7FmxA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Stephen\\RiderProjects\\NordcloudCodeTest\\src\\Countries.Application\\Countries.Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Stephen\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
+    "C:\\Users\\Stephen\\.nuget\\packages\\mediatr\\10.0.1\\mediatr.10.0.1.nupkg.sha512",
+    "C:\\Users\\Stephen\\.nuget\\packages\\mediatr.contracts\\1.0.1\\mediatr.contracts.1.0.1.nupkg.sha512",
+    "C:\\Users\\Stephen\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}
