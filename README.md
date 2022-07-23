@@ -1,4 +1,4 @@
-# NordCloud Coding Test
+# Technical Exercise (Countries API)
 ## Features
 ### Implemented
 - .NET Web API with endpoints providing the functionality described in the requirements
