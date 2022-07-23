@@ -21,8 +21,6 @@ public class UpdateCountryCommandHandler : IRequestHandler<UpdateCountryCommand,
     
     public async Task<CountryDto> Handle(UpdateCountryCommand request, CancellationToken cancellationToken)
     {
-        var a = "test";
-
         var country = _mapper.Map<Country>(request.Country);
         country = await _countryService.Update(country, cancellationToken);
         var countryDto = _mapper.Map<CountryDto>(country);

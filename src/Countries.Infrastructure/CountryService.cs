@@ -25,7 +25,7 @@ public class CountryService : ICountryService
         return country;
     }
 
-    public async Task<ICollection<Country>> GetAll(CancellationToken cancellationToken = default)
+    public async Task<IList<Country>> GetAll(CancellationToken cancellationToken = default)
     {
         var countries = await _dbRepository.GetAll(cancellationToken);
         return countries;

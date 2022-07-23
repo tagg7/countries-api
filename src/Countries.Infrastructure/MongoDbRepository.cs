@@ -10,7 +10,7 @@ public class MongoDbRepository : IDbRepository<Country>
 
     public MongoDbRepository(IMongoDatabase mongoDatabase)
     {
-        // Note: Should get the database name from configuration
+        // TODO: Should get the database name from configuration
         _collection = mongoDatabase.GetCollection<Country>("Countries");
     }
 
@@ -20,11 +20,23 @@ public class MongoDbRepository : IDbRepository<Country>
         return await cursor.FirstOrDefaultAsync(cancellationToken: cancellationToken);
     }
 
-    public async Task<ICollection<Country>> GetAll(CancellationToken cancellationToken = default)
+    public async Task<IList<Country>> GetAll(CancellationToken cancellationToken = default)
     {
-        // Note: Should use paging
+        // TODO: Should use paging
         var cursor = await _collection.FindAsync(_ => true, cancellationToken: cancellationToken);
         return await cursor.ToListAsync(cancellationToken: cancellationToken);
+    }
+    
+    public async Task<Country> Insert(Country country, CancellationToken cancellationToken = default)
+    {
+        await _collection.InsertOneAsync(country, cancellationToken: cancellationToken);
+        return country;
+    }
+
+    public async Task<IList<Country>> InsertMany(IEnumerable<Country> countries, CancellationToken cancellationToken = default)
+    {
+        await _collection.InsertManyAsync(countries, cancellationToken: cancellationToken);
+        return countries.ToList();
     }
 
     public async Task<Country> Update(Country country, CancellationToken cancellationToken = default)

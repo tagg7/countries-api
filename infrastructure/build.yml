@@ -1,0 +1,100 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - name: projectName
+    value: NordCloud.Test
+  - name: containerRegistryName
+    value: TestContainer
+  - name: containerRepositoryName
+    value: NordCloud.Test
+
+stages:
+  - stage: Build
+
+    variables:
+      - name: buildConfiguration
+        value: release
+      - group: common-build-variables
+
+    jobs:
+      - job: Build
+        steps:
+          - task: UseDotNet@2
+            displayName: Use dotnet 6
+            inputs:
+              version: "6.0.x"
+
+          - task: DotNetCoreCLI@2
+            displayName: Restore
+            inputs:
+              command: restore
+              projects: "**/*.csproj"
+
+          - task: DotNetCoreCLI@2
+            displayName: Build
+            inputs:
+              command: build
+              projects: "**/*.csproj"
+              arguments: >
+                --configuration release 
+                --no-restore
+
+          - task: DotNetCoreCLI@2
+            displayName: Run tests
+            inputs:
+              command: test
+              projects: "**/*Tests.csproj"
+              arguments: >
+                --no-build
+                --no-restore 
+                --configuration release
+
+          - task: DotNetCoreCLI@2
+            displayName: Publish
+            inputs:
+              command: publish
+              projects: "**/*.csproj"
+              arguments: >
+                --no-restore
+                --no-build
+                --output $(Build.DefaultWorkingDirectory)/publishedApp
+              zipAfterPublish: false
+              modifyOutputPath: false
+
+          - publish: $(Build.DefaultWorkingDirectory)/publishedApp
+            displayName: Publish project files
+            artifact: publishedApp
+
+          - publish: $(Build.DefaultWorkingDirectory)/infrastructure
+            displayName: Publish bicep file
+            artifact: infrastructure
+
+  - stage: Publish Images
+    dependsOn: Build
+
+    variables:
+      - name: buildDir
+        value: $(Pipeline.Workspace)/buildDir
+
+    jobs:
+      - job: Publish
+        steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifactName: publishedApp
+              targetPath: $(buildDir)/publishedApp
+              
+          - task: Docker@2
+            displayName: "Build and push image to container registry"
+            inputs:
+              containerRegistry: ${{parameters.containerRegistryName}}
+              repository: ${{parameters.containerRepositoryName}}
+              command: buildAndPush
+              Dockerfile: '**/Dockerfile'
+              addPipelineData: false

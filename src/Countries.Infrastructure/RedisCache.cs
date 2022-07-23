@@ -10,17 +10,17 @@ public class RedisCache : ICache<Country>
     private readonly IDatabase _redisDb;
     private readonly TimeSpan _expiryTimeSpan = TimeSpan.FromSeconds(10);   // Note: Should read from configuration
 
-    public RedisCache(ConnectionMultiplexer connectionMultiplexer)
+    public RedisCache(IConnectionMultiplexer connectionMultiplexer)
     {
         _redisDb = connectionMultiplexer.GetDatabase();
     }
     
     public async Task<(bool exists, Country? item)> TryGet(string key)
     {
+        await _redisDb.PingAsync();
+        
         if (!await _redisDb.KeyExistsAsync(key))
-        {
             return (false, null);
-        }
 
         var itemAsString = await _redisDb.StringGetAsync(key);
         var item = JsonConvert.DeserializeObject<Country>(itemAsString!);

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Countries.Application.Commands;
 using Countries.Application.Dtos;
 using Countries.Application.Queries;
@@ -26,11 +28,11 @@ public class CountryController : ControllerBase
     }
     
     [HttpGet("all")]
-    public async Task<ICollection<CountryDto>> GetAll()
+    public async Task<IList<CountryDto>> GetAll()
     {
         var query = new GetAllCountriesQuery();
-        var countriesDtos = await _mediator.Send(query);
-        return countriesDtos;
+        var countryDtos = await _mediator.Send(query);
+        return countryDtos;
     }
     
     [HttpPut("{id}")]
