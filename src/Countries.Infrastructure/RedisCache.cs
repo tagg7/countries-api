@@ -8,7 +8,7 @@ namespace Countries.Infrastructure;
 public class RedisCache : ICache<Country>
 {
     private readonly IDatabase _redisDb;
-    private readonly TimeSpan _expiryTimeSpan = TimeSpan.FromSeconds(10);   // Note: Should read from configuration
+    private readonly TimeSpan _expiryTimeSpan = TimeSpan.FromSeconds(10);   // TODO: Should read from configuration
 
     public RedisCache(IConnectionMultiplexer connectionMultiplexer)
     {

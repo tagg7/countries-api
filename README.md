@@ -16,3 +16,4 @@
 - Not handling any non-happy path cases such as document doesn't exist, invalid properties, etc.
 - Paging for endpoint that returns all data
 - Current setup of MongoDb and Redis does not guarantee atomicity (eg. Redis instance could return an outdated document)
+- Reading all configuration from configuration file
